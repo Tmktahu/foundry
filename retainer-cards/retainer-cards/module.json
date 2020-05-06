@@ -10,6 +10,6 @@
 	"esmodules": ["retainer-cards.js"],
 	"styles": ["/css/retainer-cards.css"],
 	"url": "https://github.com/Tmktahu/foundry/tree/master/retainer-cards",
-	"manifest": "https://raw.githubusercontent.com/Tmktahu/foundry/master/retainer-cards/module.json",
-	"download": "https://github.com/Sky-Captain-13/foundry/raw/master/alt5e/alt5e.zip"
+	"manifest": "https://raw.githubusercontent.com/Tmktahu/foundry/master/retainer-cards/retainer-cards/module.json",
+	"download": "https://github.com/Sky-Captain-13/foundry/raw/master/retainer-cards/retainer-cards.zip"
 }
