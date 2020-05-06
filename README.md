@@ -1,2 +1,2 @@
-# foundry
-Fryke's modules for FoundryVTT
+# FoundryVTT Modules
+This is a collection of Fryke's modules for FoundryVTT.
