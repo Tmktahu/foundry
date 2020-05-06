@@ -1,0 +1,15 @@
+{
+	"name": "retainer-cards",
+	"title": "Fryke's Retainer Cards",
+	"description": "Adds a Retainer Card sheet template for use with the Strongholds and Followers book.",
+	"version": "1.1.5",
+	"author": "Fryke#0746",
+	"minimumCoreVersion": "0.5.0",
+	"compatibleCoreVersion": "0.5.5",
+	"systems": ["dnd5e"],
+	"esmodules": ["retainer-cards.js"],
+	"styles": ["/css/retainer-cards.css"],
+	"url": "https://github.com/Sky-Captain-13/foundry/tree/master/alt5e",
+	"manifest": "https://raw.githubusercontent.com/Sky-Captain-13/foundry/master/alt5e/alt5e/module.json",
+	"download": "https://github.com/Sky-Captain-13/foundry/raw/master/alt5e/alt5e.zip"
+}
