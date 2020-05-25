@@ -32,7 +32,7 @@
 }
 
 .retainer-cards.dnd5e.sheet.actor.character {
-	min-width: 800px;
+	min-width: 600px;
 	/* max-width: 800px; */
 	min-height: unset;
 	max-height: 100%;
@@ -52,6 +52,19 @@
 .retainer-cards.dnd5e.sheet.actor.character .sheet-header img.profile {
 	padding: 5px;
 	margin: 0px 0px 0px -5px;
+}
+
+.retainer-cards.dnd5e.sheet .sheet-header .summary li {
+	width: 50%;
+}
+
+.retainer-cards.dnd5e.sheet.actor.character .sheet-header .charlevel {
+	padding: 0;
+	text-align: left;
+}
+
+.retainer-cards.dnd5e.sheet.actor.character .sheet-header .charlevel input {
+	width: 55%;
 }
 
 .retainer-cards.dnd5e.sheet .sheet-body {
@@ -334,3 +347,64 @@
 .retainer-cards.dnd5e.sheet.actor .spell-uses {
 	text-align: center !important;
 }
+
+.retainer-action-block {
+	margin-bottom: 10px;
+	border: 2px groove;
+  border-radius: 5px;
+  padding: 5px 3px;
+}
+
+.retainer-special-action-level-wrapper {
+	font-size: 20px;
+  text-align: center;
+  margin-bottom: -17px;
+}
+
+.retainer-special-action-level {
+  border: 2px groove;
+  border-radius: 20px;
+  display: inline-block;
+  width: fit-content;
+  padding: 2px 11px;
+  background: url(/systems/dnd5e/ui/parchment.jpg) repeat;
+}
+
+.retainer-special-action-editor .editor-edit {
+	display: unset;
+}
+
+.retainer-action-icon-wrapper {
+	max-width: 28px;
+}
+
+.retainer-action-icon {
+	background-image: url(/icons/svg/d20-grey.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  pointer-events: none;
+  height: 100%;
+}
+
+.retainer-action-icon-wrapper:hover {
+	background: radial-gradient(circle, rgba(255,100,0,1) 43%, rgba(0,0,0,0) 76%);
+}
+
+.retainer-action-name {
+	font-size: 20px !important;
+}
+
+.retainer-action-action {
+	font-size: 20px !important;
+	text-align: right !important;
+}
+
+.retainer-action-desc {
+	height: 20% !important;
+}
+
+.retainer-action-attr {
+	font-size: 14px;
+}
+

@@ -2,34 +2,51 @@
 // @author Fryke#0746
 // @version 1.0.0
 import { DND5E } from "../../systems/dnd5e/module/config.js";
-import { Dice5e } from "../../systems/dnd5e/module/dice.js";
-import { Actor5e } from "../../systems/dnd5e/module/actor/entity.js";
-import { ActorSheet5eCharacter } from "../../systems/dnd5e/module/actor/sheets/character.js";
-import { Item5e } from "../../systems/dnd5e/module/item/entity.js";
-import { ItemSheet5e } from "../../systems/dnd5e/module/item/sheet.js";
+import ActorSheet5eCharacter from "../../systems/dnd5e/module/actor/sheets/character.js";
 
-/* Currently disabled so as not to break Better Rolls, Magic Items, etc
-import { BetterRollsHooks } from "../../modules/betterrolls5e/scripts/hooks.js";
-BetterRollsHooks.addItemSheet("AltItemSheet5e");
-export class AltItemSheet5e extends ItemSheet5e {
-	static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
-			classes: ["alt5e", "dnd5e", "sheet", "item"],
-      resizable: true
-    });
-  }
 
-	setPosition (...args) {
-		return Application.prototype.setPosition.call(this, ...args);
+Hooks.once('init', async function () {
+  console.log('retainer-cards | Initializing retainer-cards');
+  game.dnd5e.entities.Actor5e.prototype._prepareCharacterData = function(actorData) {
+		const data = actorData.data;
+
+	  // Determine character level and available hit dice based on owned Class items
+	  const [level, hd] = actorData.items.reduce((arr, item) => {
+	    if ( item.type === "class" ) {
+	      const classLevels = parseInt(item.data.levels) || 1;
+	      arr[0] += classLevels;
+	      arr[1] += classLevels - (parseInt(item.data.hitDiceUsed) || 0);
+	    }
+	    return arr;
+	  }, [0, 0]);
+	  data.details.level = level;
+	  data.attributes.hd = hd;
+
+	  // Character proficiency bonus
+	  if(!actorData.flags.core || !actorData.flags.core.sheetClass == "dnd5e.RetainerCard") {
+	  	data.attributes.prof = Math.floor((level + 7) / 4);
+		} else {
+			data.attributes.prof = Math.floor((parseInt(data.details.retainerlevel) + 1) / 2);
+		}
+
+	  // Experience required for next level
+	  const xp = data.details.xp;
+	  xp.max = this.getLevelExp(level || 1);
+	  const prior = this.getLevelExp(level - 1 || 0);
+	  const required = xp.max - prior;
+	  const pct = Math.round((xp.value - prior) * 100 / required);
+	  xp.pct = Math.clamped(pct, 0, 100);
 	}
-}
-*/
+});
+
+
+
 
 export class RetainerCard extends ActorSheet5eCharacter {
 	get template() {
-		if ( !game.user.isGM && this.actor.limited && game.settings.get("alt5e", "useExpandedSheet")) return "modules/alt5e/templates/expanded-limited-sheet.html";
-		if ( !game.user.isGM && this.actor.limited ) return "modules/alt5e/templates/limited-sheet.html";
-		return "modules/alt5e/templates/alt5e-sheet.html";
+		//if ( !game.user.isGM && this.actor.limited && game.settings.get("alt5e", "useExpandedSheet")) return "modules/alt5e/templates/expanded-limited-sheet.html";
+		//if ( !game.user.isGM && this.actor.limited ) return "modules/alt5e/templates/limited-sheet.html";
+		return "modules/retainer-cards/templates/retainer-card.html";
 	}
 
 	static get defaultOptions() {
@@ -69,6 +86,66 @@ export class RetainerCard extends ActorSheet5eCharacter {
 
 	activateListeners(html) {
 		super.activateListeners(html);
+
+		html.find('#retainer-sigattack-roll').click(async (event) => {
+			await setupSigAttackItem(this.actor);
+
+			let attackInfo = this.actor.data.data.attributes.sigattack;
+			let content = '<div class="dnd5e chat-card item-card" data-actor-id="' + this.actor.id + '" data-item-id="' + attackInfo.itemid + '">' +
+						'<header class="card-header flexrow">' +
+							'<img src="icons/svg/mystery-man.svg" title="Light Cannon" width="36" height="36">' +
+							'<h3 class="item-name">' + attackInfo.name + '</h3>' +
+						'</header>' +
+						'<div class="card-content">' +
+						'</div>' +
+						'<div class="card-buttons">' +
+							'<button data-action="attack">Attack</button>' +
+							'<button data-action="damage">Damage</button>' +
+						'</div>' +
+						'<footer class="card-footer">' +
+							'<span>Signature Attack</span>' +
+							'<span>Action</span>' +
+						'</footer>' +
+					'</div>'
+
+			let messageData = {
+				user: "",
+				type: 0,
+				content: content,
+				speaker: ChatMessage.getSpeaker({token: this.actor.token})
+			}
+
+			let message = await ChatMessage.create(messageData);
+		})
+
+		html.find('.retainer-special-action-button').click(event => {
+			console.log("Printing special action")
+
+			let specAction = this.actor.data.data.attributes[event.target.id];
+
+			let content = '<div class="dnd5e chat-card item-card">' +
+						'<header class="card-header flexrow">' +
+							'<img src="icons/svg/mystery-man.svg" title="Light Cannon" width="36" height="36">' +
+							'<h3 class="item-name">' + specAction.name + '</h3>' +
+						'</header>' +
+						'<div class="card-content">' +
+						TextEditor.enrichHTML(specAction.description, false, true, true, true) +
+						'</div>' +
+						'<footer class="card-footer">' +
+							'<span>Special Attack</span>' +
+							'<span>' + specAction.cost + '</span>' +
+						'</footer>' +
+					'</div>'
+
+			let messageData = {
+				user: "",
+				type: 0,
+				content: content,
+				speaker: ChatMessage.getSpeaker({token: this.actor.token})
+			}
+
+			let message = ChatMessage.create(messageData);
+		})
 
 		// Add Rollable CSS Class to Languages
 		html.find('[for="data.traits.languages"]').addClass("rollable");
@@ -135,60 +212,92 @@ export class RetainerCard extends ActorSheet5eCharacter {
 	}
 }
 
-async function injectPassives(app, html, data) {
-	// let observant = (data.actor.items.some( i => i.name.toLowerCase() === "observant")) ? 5 : 0;
-	let sentinel_shield = (data.actor.items.some( i => i.name.toLowerCase() === "sentinel shield" && i.data.equipped)) ? 5 : 0;
-	let passivesTarget = html.find('input[name="data.traits.senses"]').parent();
-	let passives = "";
-	let tagStyle = "text-align: center; min-width: unset; font-size: 13px;";
-	if (game.settings.get("alt5e", "showPassiveInsight")) {
-		let passiveInsight = data.data.skills.ins.passive;
-		passives += `
-			<div class="form-group">
-				<label>Passive Insight</label>
-				<ul class="traits-list">
-					<li class="tag" style="${tagStyle}">${passiveInsight}</li>
-				</ul>
-			</div>
-		`;
-	};
-	if (game.settings.get("alt5e", "showPassiveInvestigation")) {
-		let passiveInvestigation = data.data.skills.inv.passive;
-		passives += `
-			<div class="form-group">
-				<label>Passive Investigation</label>
-				<ul class="traits-list">
-					<li class="tag" style="${tagStyle}">${passiveInvestigation}</li>
-				</ul>
-			</div>
-		`;
-	};
-	if (game.settings.get("alt5e", "showPassivePerception")) {
-		let actor = game.actors.entities.find(a => a.data._id === data.actor._id);
-		let observant = (actor.data.flags.dnd5e.observantFeat) ? 5 : 0;
-		let passivePerception = 10 + data.data.skills.prc.mod + observant + sentinel_shield;
-		mergeObject(actor, { "data.data.skills.prc.passive": passivePerception });
-		passives += `
-			<div class="form-group">
-				<label>Passive Perception</label>
-				<ul class="traits-list">
-					<li class="tag" style="${tagStyle}">${passivePerception}</li>
-				</ul>
-			</div>
-		`;
-	};
-	if (game.settings.get("alt5e", "showPassiveStealth")) {
-		let passiveStealth = data.data.skills.ste.passive;
-		passives += `
-			<div class="form-group">
-				<label>Passive Stealth</label>
-				<ul class="traits-list">
-					<li class="tag" style="${tagStyle}">${passiveStealth}</li>
-				</ul>
-			</div>
-		`;
-	};
-	passivesTarget.after(passives);
+async function updateHealthMarks(data) {
+	var healthMarks = document.getElementById("health-mark-list").children;
+	for (let i = 0; i < healthMarks.length; i++) {
+		if(i < parseInt(data.data.details.retainerlevel)) {
+			healthMarks[i].style.display = "inline-block";
+		} else {
+			healthMarks[i].style.display = "none";
+		}
+	}
+}
+
+async function setupSigAttackItem(actor) {
+	var attackInfo = actor.data.data.attributes.sigattack;
+	attackInfo = {
+		itemid: attackInfo.itemid,
+		name: attackInfo.name ? attackInfo.name : "Attack Name",
+		cost: attackInfo.cost ? attackInfo.cost : "Action",
+		tohit: attackInfo.tohit != null ? attackInfo.tohit : 6,
+		reach: attackInfo.reach ? attackInfo.reach : "5ft",
+		target: attackInfo.target ? attackInfo.target : "one target",
+		damageroll: attackInfo.damageroll ? attackInfo.damageroll : "1d10+6",
+		damagetype: attackInfo.damagetype ? attackInfo.damagetype : "slashing"
+	}
+
+
+	var itemId = attackInfo.itemid || "none";
+	var actorItems = actor.items.filter(e => e._id === itemId)
+	var itemData = {
+		name: actor.name + " - " + attackInfo.name,
+		type: "weapon",
+		data: {
+			actionType: "mwak",
+			attackBonus: attackInfo.tohit,
+			proficient: true,
+			damage: {
+				parts: [
+					[
+						attackInfo.damageroll,
+						attackInfo.damagetype
+					]
+				],
+				versatile: ""
+			}
+		},
+		actor: actor
+	}
+
+	var item;
+	if(actorItems.length > 0) {
+		item = actorItems[0];
+		await item.update({
+			name: actor.name + " - " + attackInfo.name,
+			type: "weapon",
+			data: {
+				actionType: "mwak",
+				attackBonus: attackInfo.tohit,
+				proficient: true,
+				damage: {
+					parts: [
+						[
+							attackInfo.damageroll,
+							attackInfo.damagetype
+						]
+					],
+					versatile: ""
+				}
+			}
+		});
+	} else {
+		item = await actor.createOwnedItem(itemData);
+	}
+
+	await game.actors.get(actor.id).update({
+		data: {attributes: {
+			sigattack: {
+				itemid: item._id,
+				name: attackInfo.name,
+				cost: attackInfo.cost,
+				tohit: attackInfo.tohit,
+				reach: attackInfo.reach,
+				target: attackInfo.target,
+				damageroll: attackInfo.damageroll,
+				damagetype: attackInfo.damagetype
+			}
+		}
+	}});
 }
 
 Actors.registerSheet("dnd5e", RetainerCard, {
@@ -196,16 +305,15 @@ Actors.registerSheet("dnd5e", RetainerCard, {
 	makeDefault: false
 });
 
-//Items.registerSheet("dnd5e", AltItemSheet5e, {
-//	makeDefault: false
-//});
 
 Hooks.on("renderRetainerCard", (app, html, data) => {
 	//injectPassives(app, html, data);
 	console.log("Hook triggered on renderRetainerCard:", {app, html, data})
+	updateHealthMarks(data);
 });
 
 Hooks.once("ready", () => {
+
 	/*game.settings.register("alt5e", "showPassiveStealth", {
 		name: "Show Passive Stealth",
 		hint: "Show the passive stealth score in Traits.",
