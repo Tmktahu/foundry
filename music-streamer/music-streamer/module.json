@@ -4,5 +4,7 @@
 	"description": "Adds a small HTML 5 player meant for playing streamed music.",
 	"author": "Fryke#0746",
 	"version": "1.0.0",
-	"minimumCoreVersion": "9"
+	"minimumCoreVersion": "9",
+	"url": "https://github.com/Tmktahu/foundry/tree/master/music-streamer/music-streamer",
+	"manifest": "https://raw.githubusercontent.com/Tmktahu/foundry/master/music-streamer/music-streamer/module.json"
 }
