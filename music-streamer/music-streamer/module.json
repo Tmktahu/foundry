@@ -2,9 +2,7 @@
 	"name": "music-streamer",
 	"title": "Fryke's Music Streamer",
 	"description": "Adds a small HTML 5 player meant for playing streamed music.",
-	"version": "1.0.0",
 	"author": "Fryke#0746",
-	"minimumCoreVersion": "9",
-	"esmodules": ["music-streamer.js"],
-	"styles": ["/css/music-streamer.css"]
+	"version": "1.0.0",
+	"minimumCoreVersion": "9"
 }
