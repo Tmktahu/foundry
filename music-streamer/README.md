@@ -8,4 +8,4 @@ The module has a play button, a stop button, a volume slider, and a settings but
 
 If the GM of the game updates the stream URL, then it is also updated for all users.
 
-<img src="https://i.imgur.com/DQb1S8N.png" style="width: 100px">
+<img src="https://i.imgur.com/DQb1S8N.png" style="width: 300px">
