@@ -1,7 +1,7 @@
 {
 	"name": "music-streamer",
 	"title": "Fryke's Music Streamer",
-	"description": "Adds a small HTML 5 player meant for playing streamed music.",
+	"description": "Adds a small HTML audio player meant for playing streamed music.",
 	"author": "Fryke#0746",
 	"authors": [
 		{
