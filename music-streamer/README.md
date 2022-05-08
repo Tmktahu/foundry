@@ -2,7 +2,7 @@
 
 This is a simple module that adds a small HTML audio player meant specifically for playing an audio stream.
 
-I coded this for my own personal use so I could steam live music to my sessions, letting me rely on my own local audio player as needed.
+I coded this for my own personal use so I could steam live music to my players, letting me rely on my own local audio player instead of Foundry's.
 
 The module has a play button, a stop button, a volume slider, and a settings button that reveals a text field where you can change the URL of the audio stream.
 
