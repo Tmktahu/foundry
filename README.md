@@ -3,7 +3,7 @@ This is a collection of Fryke's modules for FoundryVTT.
 
 ## Credit
 
-Specific credit to [Monk's TokenBar](https://github.com/ironmonk88/monks-tokenbar) for examples and code surrounding CSS and the draggable UI element.
+Specific credit to [Monk's TokenBar](https://github.com/ironmonk88/monks-tokenbar) for examples and code surrounding CSS and the draggable UI element for the Music Streamer module.
 
 ## License
 The Foundry VTT modules found in this repository, writen by Fryke, are licensed under [GNU GPLv3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).
