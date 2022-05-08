@@ -1,7 +1,7 @@
 {
 	"name": "music-streamer",
 	"title": "Fryke's Music Streamer",
-	"description": "Adds a small HTML audio player meant for playing streamed music.",
+	"description": "Adds a small HTML 5 player meant for playing streamed music.",
 	"author": "Fryke#0746",
 	"authors": [
 		{
@@ -23,5 +23,5 @@
 	"url": "https://github.com/Tmktahu/foundry/tree/master/music-streamer",
 	"readme": "https://github.com/Tmktahu/foundry/blob/master/music-streamer/README.md",
 	"manifest": "https://raw.githubusercontent.com/Tmktahu/foundry/master/music-streamer/music-streamer/module.json",
-	"download": "https://github.com/Tmktahu/foundry/raw/master/music-streamer/music-streamer/music-streamer.zip"
+	"download": ""
 }

@@ -8,7 +8,7 @@ class MusicStreamer extends Application{
   constructor(options) {
     super(options);
 
-    this.streamURL = "http://76.175.106.66:8000/?type=mp3";
+    this.streamURL = game.user.getFlag("music-streamer", "streamURL") || null;
     this.audio = new Audio(this.streamURL);
     this.audio.autoplay = true;
   }
@@ -28,8 +28,9 @@ class MusicStreamer extends Application{
     super.activateListeners(html);
 
     game.socket.on('module.music-streamer', (message) => {
-      document.getElementById('musicstreamer-url-input').value = message;
       this.streamURL = message;
+      game.user.setFlag("music-streamer", "streamURL", this.streamURL);
+      document.getElementById('musicstreamer-url-input').value = this.streamURL;
       document.getElementById('musicstreamer-settings').classList.remove('open');
       this.play();
     })
@@ -172,6 +173,7 @@ class MusicStreamer extends Application{
     }
 
     this.streamURL = newURL;
+    game.user.setFlag("music-streamer", "streamURL", this.streamURL);
     document.getElementById('musicstreamer-settings').classList.remove('open');
     this.play();
   }
