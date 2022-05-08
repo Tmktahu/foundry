@@ -3,8 +3,25 @@
 	"title": "Fryke's Music Streamer",
 	"description": "Adds a small HTML 5 player meant for playing streamed music.",
 	"author": "Fryke#0746",
+	"authors": [
+		{
+			"name": "Fryke",
+			"email": "tmktahu@gmail.com",
+			"url": "https://github.com/Tmktahu"
+		}
+	],
 	"version": "1.0.0",
 	"minimumCoreVersion": "9",
-	"url": "https://github.com/Tmktahu/foundry/tree/master/music-streamer/music-streamer",
-	"manifest": "https://raw.githubusercontent.com/Tmktahu/foundry/master/music-streamer/music-streamer/module.json"
+	"compatibleCoreVersion": "9",
+	"socket": true,
+	"scripts": [
+		"scripts/music-streamer.js"
+	],
+	"styles": [
+		"css/music-streamer.css"	
+	],
+	"url": "https://github.com/Tmktahu/foundry/tree/master/music-streamer",
+	"readme": "https://github.com/Tmktahu/foundry/blob/master/music-streamer/README.md",
+	"manifest": "https://raw.githubusercontent.com/Tmktahu/foundry/master/music-streamer/music-streamer/module.json",
+	"download": ""
 }

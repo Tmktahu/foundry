@@ -1,0 +1,93 @@
+.music-streamer {
+    display: flex;
+    position: absolute;
+    top: 0;
+    flex: 0 0 auto;
+    flex-basis: fit-content;
+    text-align: center;
+    color: #c9c7b8;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #000;
+    box-shadow: 0 0 3px #444 inset;
+    border-radius: 3px;
+    flex-wrap: nowrap;
+    align-self: flex-end;
+    z-index: 65;
+}
+
+.musicstreamer-content {
+    display: flex;
+    flex-direction: column;
+}
+
+#musicstreamer-move-handle {
+    width: 10px;
+    bottom: 0;
+    top: 0;
+    position: absolute;
+    background: url(../../../ui/denim075.png) repeat;
+}
+
+.musicstreamer-controls {
+    display: flex;
+    padding: 6px;
+    padding-left: 12px;
+}
+
+.musicstreamer-controls button {
+    width: unset;
+    height: unset;
+    color: white;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+}
+
+.musicstreamer-controls button:hover {
+    border: none;
+    background:rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    box-shadow: none;
+    color: orange;
+}
+
+.musicstreamer-controls i {
+    margin: 0;
+}
+
+.musicstreamer-settings.open {
+    display: flex !important;
+}
+
+.musicstreamer-settings {
+    display: none;
+    padding: 6px;
+    padding-left: 12px;
+}
+
+.musicstreamer-settings button {
+    width: unset;
+    height: unset;
+    color: white;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+}
+
+.musicstreamer-settings button:hover {
+    border: none;
+    background:rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    box-shadow: none;
+    color: orange;
+}
+
+.musicstreamer-settings i {
+    margin: 0;
+}
+
+#musicstreamer-url-input {
+    background: url(../../../ui/parchment.jpg) repeat;
+}

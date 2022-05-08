@@ -1,0 +1,15 @@
+<div id="music-streamer" class="music-streamer" style="{{pos}}">
+    <div id="musicstreamer-move-handle"></div>
+    <div class="musicstreamer-content">
+        <div class="musicstreamer-controls">
+            <button onclick="window.MusicStreamer.play()"><i class="fas fa-play"></i></button> 
+            <button onclick="window.MusicStreamer.stop()"><i class="fas fa-stop"></i></button> 
+            <input type="range" value="100" id="musicstreamer-volume-control">
+            <button onclick="window.MusicStreamer.toggleSettings()"><i class="fas fa-cog"></i></button>
+        </div>
+        <div class="musicstreamer-settings" id="musicstreamer-settings">
+            <input type="text" id="musicstreamer-url-input" placeholder="Enter stream URL">
+            <button onclick="window.MusicStreamer.setSrc()"><i class="fas fa-save"></i></button> 
+        </div>
+    </div>
+</div>
